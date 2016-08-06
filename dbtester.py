@@ -8,7 +8,7 @@ def main():
         c = MongoClient(host='localhost', port=27017)
         print(c.test)
         #c = MongoClient(host="localhost", port=27017)
-        print("Connected succesfully")
+        print("Connected successfully")
     except ConnectionFailure as e:
         sys.stderr.write("Could not connect to MongoDB: %s" % e)
         sys.exit(1)

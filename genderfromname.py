@@ -25,7 +25,7 @@ def genderfromname(name, tries=3):
 
     try:
         c = MongoClient(host='localhost', port=27017)
-        print("Connected succesfully")
+        print("Connected successfully")
     except ConnectionFailure as e:
         sys.stderr.write("Connection failed.")
         sys.exit(1)

@@ -70,7 +70,7 @@ def main():
     with open('newpostids.in', 'r') as postid:
         try:
             c = MongoClient(host='localhost', port=27017)
-            print("Connected succesfully")
+            print("Connected successfully")
         except ConnectionFailure as e:
             sys.stderr.write("Connection failed.")
             sys.exit(1)
