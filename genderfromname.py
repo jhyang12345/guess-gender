@@ -1,4 +1,4 @@
-import requests, codecs
+import requests, codecs, html
 import urllib.request
 from requests.utils import quote
 from pymongo import MongoClient
@@ -42,16 +42,9 @@ def genderfromname(name, tries=3):
     women = 0
     try:
         with urllib.request.urlopen(testurl) as response:
-            with codecs.open('test.html', encoding='utf-8', mode='w') as writefile:
-                writefile.write(response.read().decode('utf-8'))
-
-        with codecs.open('test.html', encoding='utf-8', mode='r') as readfile:
-            contents = readfile.read()
-            with codecs.open('test.html', encoding='utf-8', mode='w') as writefile:
-                writefile.write(contents)
-
-        with codecs.open('test.html', encoding='utf-8', mode='r') as readfile:
-            contents = readfile.read().split('\n')
+            contents = codecs.decode(response.read(), 'utf-8')
+            contents = contents.split('\n')
+            print(contents)
             for line in contents:
                 if '남자' in line and '<img src' in line:
                     men = grablength(line)
