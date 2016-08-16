@@ -17,7 +17,7 @@ def getpostsfrompage(page):#pass name of page
     ret = []
     post = graph.get_connections(id=page, connection_name="posts")
     postcount = 0
-    for x in range(50):
+    for x in range(500):
         post = requests.get(post['paging']['next']).json()
         for ids in post['data']:
             if 'id' in ids:
