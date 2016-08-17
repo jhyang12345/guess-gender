@@ -10,7 +10,7 @@ mytoken = ''
 with open('mytoken.txt', 'r') as token:
     mytoken = token.read().strip()
 
-graph = facebook.GraphAPI(access_token=mytoken, version='2.2')
+graph = facebook.GraphAPI(access_token=mytoken, version='2.3')
 
 count = 0
 def getname(user):#need to query user again
@@ -22,12 +22,18 @@ def getname(user):#need to query user again
     return ''
 
 
-def commentfrompost(postid):
+def commentfrompost(postid, dbh):
     checkurl = ''
     post = None
     try:
+        print(postid)
+        mytoken = ''
+        with open('mytoken.txt', 'r') as token:
+            mytoken = token.read().strip()
+        graph = facebook.GraphAPI(access_token=mytoken, version='2.3')
         post = graph.get_object(id=postid, connection_name="post")
     except:
+        print("Error returning False!")
         return []
     comments = None
     ret = []
@@ -37,7 +43,7 @@ def commentfrompost(postid):
         print("Comments found!")
     except:
         return []
-    for x in range(30):
+    for x in range(100):
         newurl = ''
         try:
             newurl = comments['paging']['next']
@@ -48,6 +54,8 @@ def commentfrompost(postid):
         for comment in comments['data']:
             try:
                 if comment['message'] != None and checkvalidity(getname(comment['from']), comment['message']):
+                    if(dbh.nextcomments.find({'id': comment['id'].strip()}).count() > 0):
+                        return []
                     if(len(comment['message']) >= 20):
                         print(comment['message'])
                         addcomment = {}
@@ -87,9 +95,11 @@ def main():
                 if line.strip() in totalidsread:
                     print("Skipping", line)
                     continue
-                newcomments = commentfrompost(line)
-                idsread.write(line)
-
+                newcomments = commentfrompost(line, dbh)
+                if(newcomments == False):
+                    continue
+                if newcomments != []:
+                    idsread.write(line + '\n')
 
                 for comment in newcomments:
                     if commentssaved > 100000:

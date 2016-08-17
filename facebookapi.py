@@ -4,7 +4,7 @@ mytoken = ''
 with open('mytoken.txt', 'r') as token:
     mytoken = token.read().strip()
 
-graph = facebook.GraphAPI(access_token=mytoken, version='2.2')
+graph = facebook.GraphAPI(access_token=mytoken, version='2.3')
 
 post = graph.get_connections(id='walmart', connection_name="posts")
 
